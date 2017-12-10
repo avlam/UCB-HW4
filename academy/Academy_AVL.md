@@ -677,27 +677,85 @@ school_summary_sorted.tail()
 
 
 ```python
-students_by_school_and_grade = student_data.groupby(['school','grade'])
-students_by_school_and_grade['math_score'].mean().head(12)
+math_by_school = pd.concat([student_data[['school','name']],
+           student_data[['grade','math_score']].pivot(columns = 'grade',values = 'math_score')]
+          , axis = 1).groupby(['school']).mean()[['9th','10th','11th','12th']]
+math_by_school.head()
 ```
 
 
 
 
-    school                grade
-    Bailey High School    10th     76.996772
-                          11th     77.515588
-                          12th     76.492218
-                          9th      77.083676
-    Cabrera High School   10th     83.154506
-                          11th     82.765560
-                          12th     83.277487
-                          9th      83.094697
-    Figueroa High School  10th     76.539974
-                          11th     76.884344
-                          12th     77.151369
-                          9th      76.403037
-    Name: math_score, dtype: float64
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>9th</th>
+      <th>10th</th>
+      <th>11th</th>
+      <th>12th</th>
+    </tr>
+    <tr>
+      <th>school</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Bailey High School</th>
+      <td>77.083676</td>
+      <td>76.996772</td>
+      <td>77.515588</td>
+      <td>76.492218</td>
+    </tr>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>83.094697</td>
+      <td>83.154506</td>
+      <td>82.765560</td>
+      <td>83.277487</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>76.403037</td>
+      <td>76.539974</td>
+      <td>76.884344</td>
+      <td>77.151369</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>77.361345</td>
+      <td>77.672316</td>
+      <td>76.918058</td>
+      <td>76.179963</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>82.044010</td>
+      <td>84.229064</td>
+      <td>83.842105</td>
+      <td>83.356164</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 
 
@@ -705,26 +763,85 @@ students_by_school_and_grade['math_score'].mean().head(12)
 
 
 ```python
-students_by_school_and_grade['reading_score'].mean().head(12)
+reading_by_school = pd.concat([student_data[['school','name']],
+           student_data[['grade','reading_score']].pivot(columns = 'grade',values = 'reading_score')]
+          , axis = 1).groupby(['school']).mean()[['9th','10th','11th','12th']]
+reading_by_school.head()
 ```
 
 
 
 
-    school                grade
-    Bailey High School    10th     80.907183
-                          11th     80.945643
-                          12th     80.912451
-                          9th      81.303155
-    Cabrera High School   10th     84.253219
-                          11th     83.788382
-                          12th     84.287958
-                          9th      83.676136
-    Figueroa High School  10th     81.408912
-                          11th     80.640339
-                          12th     81.384863
-                          9th      81.198598
-    Name: reading_score, dtype: float64
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>9th</th>
+      <th>10th</th>
+      <th>11th</th>
+      <th>12th</th>
+    </tr>
+    <tr>
+      <th>school</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Bailey High School</th>
+      <td>81.303155</td>
+      <td>80.907183</td>
+      <td>80.945643</td>
+      <td>80.912451</td>
+    </tr>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>83.676136</td>
+      <td>84.253219</td>
+      <td>83.788382</td>
+      <td>84.287958</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>81.198598</td>
+      <td>81.408912</td>
+      <td>80.640339</td>
+      <td>81.384863</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>80.632653</td>
+      <td>81.262712</td>
+      <td>80.403642</td>
+      <td>80.662338</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>83.369193</td>
+      <td>83.706897</td>
+      <td>84.288089</td>
+      <td>84.013699</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 
 
@@ -842,7 +959,7 @@ bins = 3
 group_names = ['Small', 'Medium', 'Large']
 school_summary['Size'] = pd.cut(school_summary['Total Students'],bins,labels = group_names)
 ss_by_size = school_summary.groupby('Size')
-ss_by_size.mean().sort_values(by = 'Total Students', ascending = False).head().drop('School ID',axis = 1)
+ss_by_size.mean().sort_values(by = 'Total Students', ascending = True).head().drop('School ID',axis = 1)
 ```
 
 
@@ -889,15 +1006,15 @@ ss_by_size.mean().sort_values(by = 'Total Students', ascending = False).head().d
   </thead>
   <tbody>
     <tr>
-      <th>Large</th>
-      <td>4592.750000</td>
-      <td>2.947240e+06</td>
-      <td>77.063340</td>
-      <td>80.919864</td>
-      <td>81.059691</td>
-      <td>66.464293</td>
-      <td>53.674303</td>
-      <td>641.750000</td>
+      <th>Small</th>
+      <td>1415.857143</td>
+      <td>8.545616e+05</td>
+      <td>83.502373</td>
+      <td>83.883125</td>
+      <td>96.593182</td>
+      <td>93.585560</td>
+      <td>90.410769</td>
+      <td>602.571429</td>
     </tr>
     <tr>
       <th>Medium</th>
@@ -911,15 +1028,15 @@ ss_by_size.mean().sort_values(by = 'Total Students', ascending = False).head().d
       <td>629.000000</td>
     </tr>
     <tr>
-      <th>Small</th>
-      <td>1415.857143</td>
-      <td>8.545616e+05</td>
-      <td>83.502373</td>
-      <td>83.883125</td>
-      <td>96.593182</td>
-      <td>93.585560</td>
-      <td>90.410769</td>
-      <td>602.571429</td>
+      <th>Large</th>
+      <td>4592.750000</td>
+      <td>2.947240e+06</td>
+      <td>77.063340</td>
+      <td>80.919864</td>
+      <td>81.059691</td>
+      <td>66.464293</td>
+      <td>53.674303</td>
+      <td>641.750000</td>
     </tr>
   </tbody>
 </table>
